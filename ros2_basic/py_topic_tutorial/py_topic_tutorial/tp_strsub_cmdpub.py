@@ -61,7 +61,6 @@ class ParkingNode(Node):
             self.get_logger().info('== E-Stop!!! ==\n')
             twist_msg.linear.x = 0.0
             twist_msg.angular.z = 0.0
-
             self.twist_publisher.publish(twist_msg)
 
 def main(args=None):
