@@ -54,6 +54,8 @@ class ImageSubscriber(Node):
         edges = cv2.Canny(blur_gray, low_threshold, high_threshold)
 
         # Next we'll create a masked edges image using cv2.fillPoly()
+        # print(len(edges))
+
         mask = np.zeros_like(edges)
         ignore_mask_color = 255
 
@@ -68,6 +70,8 @@ class ImageSubscriber(Node):
         )
         cv2.fillPoly(mask, vertices, ignore_mask_color)
         masked_edges = cv2.bitwise_and(edges, mask)
+
+        # print('masked edges', len(masked_edges))
 
         # Define the Hough transform parameters
         # Make a blank the same size as our image to draw on
@@ -84,16 +88,20 @@ class ImageSubscriber(Node):
             masked_edges, rho, theta, threshold, np.array([]), min_line_length, max_line_gap
         )
 
+        # print('liness', len(lines))
+
+        if len(lines) > 20:
         # Iterate over the output "lines" and draw lines on a blank image
-        for line in lines:
-            for x1, y1, x2, y2 in line:
-                cv2.line(line_image, (x1, y1), (x2, y2), (255, 0, 0), 10)
+            for line in lines:
+                for x1, y1, x2, y2 in line:
+                    cv2.line(line_image, (x1, y1), (x2, y2), (255, 0, 0), 10)
 
-        # Create a "color" binary image to combine with line image
-        color_edges = np.dstack((edges, edges, edges))
+            # Create a "color" binary image to combine with line image
+            color_edges = np.dstack((edges, edges, edges))
 
-        # Draw the lines on the edge image
-        lines_edges = cv2.addWeighted(color_edges, 0.8, line_image, 1, 0)
+            # Draw the lines on the edge image
+            lines_edges = cv2.addWeighted(color_edges, 0.8, line_image, 1, 0)
+
         return lines_edges
    
     def listener_callback(self, data):
@@ -106,6 +114,7 @@ class ImageSubscriber(Node):
 
         # Convert ROS Image message to OpenCV image
         current_frame = self.br.imgmsg_to_cv2(data, "bgr8")
+
         edge_frame = self.hough_transform(current_frame)
 
         # Display image
