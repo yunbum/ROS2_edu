@@ -102,11 +102,11 @@ class ImageSubscriber(Node):
 
         # Convert ROS Image message to OpenCV image
         current_frame = self.br.imgmsg_to_cv2(data, "bgr8")
-        # edge_frame = self.hough_transform(current_frame)
+        edge_frame = self.hough_transform(current_frame)
 
         # Display image
         #cv2.imshow("camera", current_frame)
-        cv2.imshow("camera", current_frame) #edge_frame
+        cv2.imshow("camera", edge_frame) #edge_frame
 
         cv2.waitKey(1)
 
