@@ -27,8 +27,8 @@ class ImagePublisher(Node):
         self.publisher_ = self.create_publisher(Image, 'video_frames', 10)
             
         # We will publish a message every 0.1 seconds
-        timer_period = 0.1  # seconds
-            
+        timer_period = 0.05  # seconds
+        self.count = 1    
         # Create the timer
         self.timer = self.create_timer(timer_period, self.timer_callback)
                 
@@ -41,6 +41,8 @@ class ImagePublisher(Node):
         # webcam Video Publish
         print(self.cap.isOpened())
                 
+        ret, frame = self.cap.read()
+        print("frame.shape = {0}".format(frame.shape))
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
    
@@ -53,16 +55,18 @@ class ImagePublisher(Node):
         # This method returns True/False as well
         # as the video frame.
         ret, frame = self.cap.read()
-        print("frame.shape = {0}".format(frame.shape))
+        # print("frame.shape = {0}".format(frame.shape))
                 
         if ret == True:
             # Publish the image.
             # The 'cv2_to_imgmsg' method converts an OpenCV
             # image to a ROS2 image message
             self.publisher_.publish(self.br.cv2_to_imgmsg(frame, encoding="bgr8"))
+            self.count += 1
 
         # Display the message on the console
-        self.get_logger().info('Pub video frame')
+        if self.count%50 == 0:
+            self.get_logger().info('Pub video frame')
     
 def main(args=None):
 
