@@ -1,4 +1,4 @@
-# Copyright 2022 @RoadBalance
+# Copyright 2023 @RLmodel
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,8 +61,8 @@ class TwistPubNode(Node):
         msg = Twist()
 
         # Fill in msg with compatible values
-        msg.linear.x = 0.5
-        msg.angular.z = 1.0
+        msg.linear.x = 1.0
+        msg.angular.z = 0.5
 
         self.twist_publisher.publish(msg)
 
