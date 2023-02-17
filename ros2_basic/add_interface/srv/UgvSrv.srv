@@ -1,6 +1,0 @@
-string name
-uint8 age
----
-string res
-
-#education example service type
