@@ -20,11 +20,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'example_node_1 = py_node_tutorial.node_example_1:main',
-            'example_node_2 = py_node_tutorial.node_example_2:main',
-            'example_node_3 = py_node_tutorial.node_example_3:main',
-            'example_node_4 = py_node_tutorial.node_example_4:main',
-            'example_node_5 = py_node_tutorial.node_example_5:main',
             'test_node1     = py_node_tutorial.ex_node1:main',
             'test_node2     = py_node_tutorial.ex_node2:main',
             'test_node3     = py_node_tutorial.ex_node3:main',

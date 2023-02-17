@@ -29,7 +29,7 @@ class ImageSubscriber(Node):
         self.subscription = self.create_subscription(
             Image, 
             # 'camera/color/image_raw', 
-            '/image', 
+            '/video_frames', #/image
 
             self.listener_callback, 
             10)
@@ -98,7 +98,7 @@ class ImageSubscriber(Node):
         Callback function.
         """
         # Display the message on the console
-        self.get_logger().info('Receiving video frame')
+        self.get_logger().info('sub img topic')
 
         # Convert ROS Image message to OpenCV image
         current_frame = self.br.imgmsg_to_cv2(data, "bgr8")
@@ -106,7 +106,7 @@ class ImageSubscriber(Node):
 
         # Display image
         #cv2.imshow("camera", current_frame)
-        cv2.imshow("camera", edge_frame)
+        cv2.imshow("camera", current_frame) #edge_frame
 
         cv2.waitKey(1)
 
