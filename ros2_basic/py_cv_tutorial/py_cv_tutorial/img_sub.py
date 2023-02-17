@@ -38,6 +38,9 @@ class ImageSubscriber(Node):
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
 
+        self.count = 1
+
+
     def hough_transform(self, img_frame):
         gray = cv2.cvtColor(img_frame, cv2.COLOR_RGB2GRAY)
 
@@ -98,7 +101,8 @@ class ImageSubscriber(Node):
         Callback function.
         """
         # Display the message on the console
-        self.get_logger().info('sub img topic')
+        if self.count%50 == 0:
+            self.get_logger().info('sub img topic')
 
         # Convert ROS Image message to OpenCV image
         current_frame = self.br.imgmsg_to_cv2(data, "bgr8")
@@ -106,7 +110,9 @@ class ImageSubscriber(Node):
 
         # Display image
         #cv2.imshow("camera", current_frame)
-        cv2.imshow("camera", edge_frame) #edge_frame
+        cv2.imshow("camera", edge_frame) 
+
+        self.count += 1
 
         cv2.waitKey(1)
 
