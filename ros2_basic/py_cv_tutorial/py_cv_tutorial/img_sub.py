@@ -17,6 +17,8 @@ class ImageSubscriber(Node):
     """
     Create an ImageSubscriber class, which is a subclass of the Node class.
     """
+
+    
     def __init__(self):
         """
         Class constructor to set up the node
@@ -88,7 +90,9 @@ class ImageSubscriber(Node):
             masked_edges, rho, theta, threshold, np.array([]), min_line_length, max_line_gap
         )
 
-        # print('liness', len(lines))
+        if self.count%50 == 0:
+            print('liness', len(lines))
+        # self.checkimg = len(lines)
 
         if len(lines) > 20:
         # Iterate over the output "lines" and draw lines on a blank image
@@ -101,6 +105,7 @@ class ImageSubscriber(Node):
 
             # Draw the lines on the edge image
             lines_edges = cv2.addWeighted(color_edges, 0.8, line_image, 1, 0)
+            self.edgebackup = lines_edges
 
         return lines_edges
    
@@ -115,12 +120,14 @@ class ImageSubscriber(Node):
         # Convert ROS Image message to OpenCV image
         current_frame = self.br.imgmsg_to_cv2(data, "bgr8")
 
-        edge_frame = self.hough_transform(current_frame)
+        try:
+            edge_frame = self.hough_transform(current_frame)
 
         # Display image
         #cv2.imshow("camera", current_frame)
-        cv2.imshow("camera", edge_frame) 
-
+            cv2.imshow("camera", edge_frame) 
+        except:
+            print('err')
         self.count += 1
 
         cv2.waitKey(1)
@@ -133,6 +140,7 @@ def main(args=None):
     # Create the node
     image_subscriber = ImageSubscriber()
 
+    # print('check img val', checkimg)
     # Spin the node so the callback function is called.
     rclpy.spin(image_subscriber)
 
