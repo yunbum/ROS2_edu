@@ -34,7 +34,7 @@ class ImagePublisher(Node):
                 
         # Create a VideoCapture object
         # The argument '0' gets the default webcam.
-        self.cap = cv2.VideoCapture(2)
+        self.cap = cv2.VideoCapture(0)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640) # 가로
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) # 세로
 
